@@ -596,12 +596,12 @@ function applyLocaleToDOM() {
 window.openLocaleSheet = function() {
   document.getElementById('sheetOverlay').classList.add('show');
   document.getElementById('localeSheet').classList.add('open');
-  document.getElementById('localeChevron').textContent = '▴';
+  const ch = document.getElementById('localeChevron'); if (ch) ch.textContent = '▴';
 };
 window.closeLocaleSheet = function() {
   document.getElementById('sheetOverlay').classList.remove('show');
   document.getElementById('localeSheet').classList.remove('open');
-  document.getElementById('localeChevron').textContent = '▾';
+  const ch = document.getElementById('localeChevron'); if (ch) ch.textContent = '▾';
 };
 window.selectLocale = function(locale) {
   currentLocale = locale;
@@ -723,7 +723,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v90';
+const APP_VERSION = 'v91';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -1065,7 +1065,7 @@ function renderRecipeCatalog() {
       ${regionDd}${sourceDd}
       <div class="rc-filter-scroll-wrap">
         <button class="rc-scroll-btn rc-scroll-left" onclick="rcScrollPills(-1)" aria-label="Scroll left">&#8249;</button>
-        <div class="rc-filter-pills" id="rcFilterPills">${regionChip}${traitPills}${vegPill}${sourceChip}${!noFilter ? `<button class="rc-clear-btn" onclick="toggleRcFilter('all')" aria-label="Filters wissen">&#10005;</button>` : ''}</div>
+        <div class="rc-filter-pills" id="rcFilterPills">${!noFilter ? `<button class="rc-clear-btn" onclick="toggleRcFilter('all')" aria-label="Filters wissen">&#10005;</button>` : ''}${regionChip}${traitPills}${vegPill}${sourceChip}</div>
         <button class="rc-scroll-btn rc-scroll-right" onclick="rcScrollPills(1)" aria-label="Scroll right">&#8250;</button>
       </div>
       <div class="rc-view-btns">

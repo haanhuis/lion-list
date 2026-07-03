@@ -31,7 +31,8 @@ html {
 html, body {
     height: 100%;
     height: 100dvh;
-    overflow: clip;
+    overflow: hidden;
+    overscroll-behavior: none;
 }
 
 @supports (-webkit-touch-callout: none) {
@@ -2013,6 +2014,11 @@ main.main--recipes {
     border-radius: 12px;
     padding: 0 14px;
     height: 40px;
+    border: 1.5px solid transparent;
+    transition: border-color 0.15s;
+}
+.list-search-row:focus-within {
+    border-color: var(--brandColor);
 }
 
 .list-search-icon {
