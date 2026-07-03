@@ -84,22 +84,21 @@
 
 <header class="header">
   <div class="header-top">
-    <div class="logo-wrap">
-      <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 256 256" xml:space="preserve"><g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)"><path d="M 74.396 66.93 h -47.12 c -3.491 0 -5.549 -2.665 -5.777 -5.299 c -0.178 -2.057 0.741 -4.326 2.792 -5.506 L 16.745 22.34 c -0.132 -0.592 0.012 -1.213 0.392 -1.687 c 0.379 -0.474 0.954 -0.75 1.561 -0.75 H 88 c 0.647 0 1.256 0.314 1.631 0.842 c 0.375 0.528 0.471 1.206 0.258 1.817 l -7.983 22.876 c -0.991 2.838 -3.446 4.921 -6.406 5.438 l -48.522 8.48 c -0.006 0.001 -0.012 0.002 -0.019 0.003 c -1.499 0.267 -1.507 1.541 -1.473 1.926 c 0.033 0.386 0.261 1.644 1.792 1.644 h 47.12 c 1.104 0 2 0.896 2 2 S 75.501 66.93 74.396 66.93 z M 21.193 23.904 l 6.966 31.186 l 46.652 -8.152 c 1.533 -0.268 2.805 -1.347 3.318 -2.817 l 7.055 -20.216 H 21.193 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/><path d="M 27.846 83.111 c -3.615 0 -6.555 -2.94 -6.555 -6.555 c 0 -3.615 2.94 -6.556 6.555 -6.556 s 6.556 2.94 6.556 6.556 C 34.401 80.171 31.46 83.111 27.846 83.111 z M 27.846 74.001 c -1.409 0 -2.555 1.146 -2.555 2.556 c 0 1.408 1.146 2.555 2.555 2.555 c 1.409 0 2.556 -1.146 2.556 -2.555 C 30.401 75.147 29.255 74.001 27.846 74.001 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/><path d="M 68.845 83.111 c -3.615 0 -6.556 -2.94 -6.556 -6.555 c 0 -3.615 2.94 -6.556 6.556 -6.556 s 6.556 2.94 6.556 6.556 C 75.4 80.171 72.46 83.111 68.845 83.111 z M 68.845 74.001 c -1.409 0 -2.556 1.146 -2.556 2.556 c 0 1.408 1.146 2.555 2.556 2.555 s 2.556 -1.146 2.556 -2.555 C 71.4 75.147 70.254 74.001 68.845 74.001 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/><path d="M 18.695 23.904 c -0.916 0 -1.742 -0.633 -1.95 -1.564 l -1.407 -6.301 c -0.677 -3.033 -3.321 -5.151 -6.428 -5.151 H 2 c -1.104 0 -2 -0.896 -2 -2 s 0.896 -2 2 -2 h 6.909 c 4.995 0 9.244 3.404 10.333 8.279 l 1.407 6.301 c 0.241 1.078 -0.438 2.147 -1.516 2.388 C 18.986 23.889 18.839 23.904 18.695 23.904 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/></g></svg>
-      <div class="logo-text" onclick="menuConnectList()" style="cursor:pointer;">
-        <div class="logo" id="appTitle">Kommissies</div>
-        <div class="header-list-name" id="headerListName"></div>
-      </div>
+    <button class="header-icon-btn" onclick="openMenu()" id="menuBtn" title="Menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/>
+        <line x1="3" y1="10" x2="17" y2="10"/>
+        <line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="header-center" onclick="menuConnectList()" style="cursor:pointer;">
+      <img src="komisses-app-logo.svg" class="header-logo-img" alt="">
+      <span class="header-list-name" id="headerListName"></span>
+      <img src="double-arrows.svg" class="header-arrows-img" alt="">
     </div>
-    <div class="header-actions">
-      <div class="locale-wrap" id="localeWrap">
-        <button class="icon-btn locale-btn" id="localeBtn" onclick="openLocaleSheet()">
-          <span id="localeBtnLabel">NL</span><span class="locale-chevron" id="localeChevron">▾</span>
-        </button>
-      </div>
-      <button class="icon-btn" onclick="openShare()" title="Deel lijst"><i class="lni lni-user-multiple-4"></i></button>
-      <button class="icon-btn" id="menuBtn" onclick="openMenu()" title="Menu"><i class="lni lni-menu-meatballs-1"></i></button>
-    </div>
+    <button class="header-icon-btn" onclick="openShare()" title="Deel lijst">
+      <img src="add-user.svg" width="20" height="20" alt="">
+    </button>
   </div>
 </header>
 
@@ -381,6 +380,7 @@
   <button class="menu-item" id="menuItemToggleDone" onclick="menuToggleDone()"><i class="lni lni-eye icon-colored"></i> <span>Verberg afgevinkte items</span></button>
   <button class="menu-item" id="menuItemRemove" onclick="menuRemoveChecked()"><i class="lni lni-trash-3 icon-colored"></i> <span>Verwijder afgevinkte items</span></button>
   <div style="height:1px;background:var(--grey-mid);margin:4px 0;"></div>
+  <button class="menu-item" onclick="closeMenu();openLocaleSheet()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-colored"><path opacity="0.4" d="M7.25195 11.9993C7.25197 11.0658 7.31072 10.1593 7.41992 9.2981C6.8088 9.45741 6.2503 9.64627 5.75684 9.85962C4.97587 10.1973 4.39119 10.5802 4.0127 10.967C3.63766 11.3504 3.50009 11.6985 3.5 11.9993L3.50684 12.1145C3.53833 12.3878 3.68462 12.696 4.0127 13.0315C4.39116 13.4184 4.97596 13.8013 5.75684 14.1389C6.25028 14.3523 6.80884 14.5411 7.41992 14.7004C7.31076 13.8393 7.25195 12.9326 7.25195 11.9993ZM14.7021 16.5803C13.9922 16.6704 13.2515 16.7268 12.4902 16.7434L12 16.7493C11.067 16.7493 10.1606 16.6894 9.2998 16.5803C9.45909 17.1912 9.64902 17.7491 9.8623 18.2424C10.1999 19.0233 10.582 19.608 10.9688 19.9866C11.3521 20.3617 11.7002 20.5001 12.001 20.5002C12.3018 20.5002 12.6497 20.3618 13.0332 19.9866C13.4201 19.608 13.803 19.0235 14.1406 18.2424C14.3538 17.7492 14.5429 17.1911 14.7021 16.5803ZM12.001 3.50025C11.7002 3.50038 11.3521 3.63797 10.9688 4.01294C10.5819 4.39141 10.199 4.97618 9.86133 5.75708C9.64818 6.25006 9.45902 6.80781 9.2998 7.41822C10.1606 7.30915 11.067 7.25025 12 7.25025C12.9338 7.25026 13.8407 7.30894 14.7021 7.41822C14.5429 6.80779 14.3538 6.25006 14.1406 5.75708C13.803 4.97619 13.4201 4.3914 13.0332 4.01294C12.6499 3.63807 12.3018 3.50025 12.001 3.50025ZM8.75195 11.9993C8.75195 13.0665 8.8325 14.0839 8.97852 15.0208C9.91535 15.1668 10.9327 15.2493 12 15.2493L12.4609 15.2434C13.361 15.2236 14.2211 15.1457 15.0225 15.0208C15.1473 14.2196 15.2254 13.3599 15.2451 12.4602L15.251 11.9993C15.251 10.9315 15.1686 9.91399 15.0225 8.97681C14.0853 8.83066 13.0677 8.75027 12 8.75025C10.9328 8.75025 9.91528 8.83081 8.97852 8.97681C8.83235 9.91392 8.75197 10.9315 8.75195 11.9993ZM16.7451 12.4905C16.7285 13.2511 16.6719 13.9911 16.582 14.7004C17.1921 14.5413 17.7494 14.352 18.2422 14.1389C19.0231 13.8013 19.6078 13.4184 19.9863 13.0315C20.3613 12.6481 20.499 12.3001 20.499 11.9993C20.4989 11.6984 20.3614 11.3504 19.9863 10.967C19.6078 10.5802 19.0231 10.1973 18.2422 9.85962C17.7494 9.6466 17.1921 9.45725 16.582 9.2981C16.6912 10.1593 16.751 11.0658 16.751 11.9993L16.7451 12.4905ZM21.999 11.9993C21.999 12.8026 21.6194 13.5069 21.0586 14.0803C20.501 14.6503 19.7307 15.1298 18.8379 15.5159C18.0938 15.8376 17.2398 16.1033 16.3076 16.3059C16.1049 17.2389 15.8395 18.0935 15.5176 18.8381C15.1316 19.7309 14.6529 20.5011 14.083 21.0588C13.5096 21.6199 12.8045 22.0002 12.001 22.0002C11.1976 22.0001 10.4933 21.6198 9.91992 21.0588C9.35003 20.5012 8.87137 19.7309 8.48535 18.8381C8.16337 18.0934 7.89607 17.239 7.69336 16.3059C6.76064 16.1033 5.90661 15.8377 5.16211 15.5159C4.26916 15.1298 3.49812 14.6504 2.94043 14.0803C2.41462 13.5427 2.04856 12.8901 2.00488 12.1487L2 11.9993C2.00009 11.196 2.37955 10.4916 2.94043 9.91822C3.49812 9.34816 4.26917 8.86972 5.16211 8.48365C5.90673 8.16172 6.76046 7.89433 7.69336 7.69165C7.89603 6.75932 8.16356 5.90559 8.48535 5.16138C8.87142 4.26866 9.34994 3.49824 9.91992 2.94068C10.4933 2.37981 11.1977 2.00038 12.001 2.00025C12.8044 2.00025 13.5096 2.37969 14.083 2.94068C14.6529 3.49826 15.1316 4.26866 15.5176 5.16138C15.8393 5.9055 16.105 6.75946 16.3076 7.69165C17.2399 7.89431 18.0937 8.16188 18.8379 8.48365C19.7306 8.86968 20.501 9.34826 21.0586 9.91822C21.6195 10.4916 21.9989 11.1959 21.999 11.9993Z" fill="currentColor"/><path d="M20.4912 11.5627C20.2636 7.07198 16.5501 3.50025 12.0029 3.50025C7.30913 3.50026 3.50391 7.30627 3.50391 12.0002C3.50396 16.6942 7.30917 20.5002 12.0029 20.5002C16.6967 20.5002 20.5019 16.6942 20.502 12.0002L20.4912 11.5627ZM21.9893 12.5149C21.7214 17.798 17.3527 22.0002 12.0029 22.0002C6.48057 22.0002 2.00396 17.5224 2.00391 12.0002C2.00391 6.47802 6.48053 2.00026 12.0029 2.00025C17.5253 2.00025 22.0019 6.47802 22.002 12.0002L21.9893 12.5149Z" fill="currentColor"/></svg> <span>Taal / Dialect</span></button>
   <button class="menu-item" id="menuItemUpdateApp" onclick="menuUpdateApp()"><i class="lni lni-refresh-circle-1-clockwise icon-colored"></i> <span>App updaten</span></button>
   <button class="menu-item" id="menuItemNerd" style="font-size:13px;color:var(--text-muted);" onclick="menuNerdStuff()"><i class="lni lni-code" style="width:18px;margin-right:8px;color:#bbb;"></i> <span>Nerd stuff</span></button>
 </div>
@@ -724,7 +724,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v82';
+const APP_VERSION = 'v83';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
