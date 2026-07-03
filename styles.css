@@ -2952,7 +2952,9 @@ main.main--recipes {
    On wide screens, convert the bottom nav into a left-side nav rail  */
 @media (min-width: 768px) {
     body {
-        flex-direction: row;
+        flex-direction: column;
+        padding-top: 58px;
+        padding-left: 220px;
     }
 
     header {
@@ -2974,11 +2976,13 @@ main.main--recipes {
         align-items: stretch;
         justify-content: flex-start;
         border: none;
+        border-right: 1px solid rgba(0,0,0,0.08);
         border-radius: 0;
         padding: 16px 12px 24px 0;
         gap: 4px;
         box-shadow: none;
         z-index: 100;
+        background: var(--bg);
     }
 
     .bottom-tab {
@@ -3011,7 +3015,6 @@ main.main--recipes {
 
     main {
         padding-bottom: 40px;
-        padding-top: 58px;
     }
 
     main > .category-section:first-child,
@@ -3074,8 +3077,27 @@ main.main--recipes {
     }
 
     main.main--weekmenu {
-        padding-top: 58px;
+        padding-top: 0;
     }
+
+    #menuPopup {
+        left: 0;
+        right: auto;
+        top: 58px;
+        bottom: 0;
+        width: 280px;
+        border-radius: 0;
+        transform: translateX(-100%);
+        transition: transform 0.25s cubic-bezier(0.32,0.72,0,1);
+        box-shadow: none;
+        padding-top: 0;
+        overflow-y: auto;
+    }
+    #menuPopup.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+    }
+    #menuPopup .sheet-handle { display: none; }
 
     #main .sri-add {
         background: none;

@@ -723,7 +723,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v87';
+const APP_VERSION = 'v88';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -1038,20 +1038,20 @@ function renderRecipeCatalog() {
   const sources = [{id:'dagelijkse-kost',label:'Dagelijkse Kost'},{id:'pinterest',label:'Pinterest'},{id:'kookboek',label:'Kookboek'}];
   const noFilter = !rcFilterRegion && !rcFilterTraits.length && !rcFilterVeg && !rcFilterSource;
   const regionLabel = rcFilterRegion || 'Regio';
-  const regionDropdown = `<div class="rc-region-wrap" id="rcRegionWrap">
+  const regionChip = `<div class="rc-region-wrap" id="rcRegionWrap">
     <button class="weekmenu-filter-btn rc-region-chip${rcFilterRegion?' active':''}" onclick="toggleRcRegionDropdown(event)">${regionLabel} <span class="rc-region-arrow">▾</span></button>
-    <div class="rc-region-dropdown" id="rcRegionDropdown">
-      <button class="rc-region-option${!rcFilterRegion?' selected':''}" onclick="toggleRcFilter('region','');closeRcRegionDropdown()">Alle regio's</button>
-      ${regions.map(r => `<button class="rc-region-option${rcFilterRegion===r?' selected':''}" onclick="toggleRcFilter('region','${r}');closeRcRegionDropdown()">${r}</button>`).join('')}
-    </div>
+  </div>`;
+  const regionDd = `<div class="rc-region-dropdown" id="rcRegionDropdown">
+    <button class="rc-region-option${!rcFilterRegion?' selected':''}" onclick="toggleRcFilter('region','');closeRcRegionDropdown()">Alle regio's</button>
+    ${regions.map(r => `<button class="rc-region-option${rcFilterRegion===r?' selected':''}" onclick="toggleRcFilter('region','${r}');closeRcRegionDropdown()">${r}</button>`).join('')}
   </div>`;
   const sourceLabel = rcFilterSource ? sources.find(s=>s.id===rcFilterSource)?.label : 'Bron';
-  const sourceDropdown = `<div class="rc-region-wrap" id="rcSourceWrap">
+  const sourceChip = `<div class="rc-region-wrap" id="rcSourceWrap">
     <button class="weekmenu-filter-btn rc-region-chip${rcFilterSource?' active':''}" onclick="toggleRcSourceDropdown(event)">${sourceLabel} <span class="rc-region-arrow">▾</span></button>
-    <div class="rc-region-dropdown" id="rcSourceDropdown">
-      <button class="rc-region-option${!rcFilterSource?' selected':''}" onclick="toggleRcFilter('source','');closeRcSourceDropdown()">Alle bronnen</button>
-      ${sources.map(s => `<button class="rc-region-option${rcFilterSource===s.id?' selected':''}" onclick="toggleRcFilter('source','${s.id}');closeRcSourceDropdown()">${s.label}</button>`).join('')}
-    </div>
+  </div>`;
+  const sourceDd = `<div class="rc-region-dropdown" id="rcSourceDropdown">
+    <button class="rc-region-option${!rcFilterSource?' selected':''}" onclick="toggleRcFilter('source','');closeRcSourceDropdown()">Alle bronnen</button>
+    ${sources.map(s => `<button class="rc-region-option${rcFilterSource===s.id?' selected':''}" onclick="toggleRcFilter('source','${s.id}');closeRcSourceDropdown()">${s.label}</button>`).join('')}
   </div>`;
   const traitPills = traits.map(t => `<button class="weekmenu-filter-btn${rcFilterTraits.includes(t)?' active':''}" onclick="toggleRcFilter('trait','${t}')">${t.charAt(0).toUpperCase()+t.slice(1)}</button>`).join('');
   const vegPill = `<button class="weekmenu-filter-btn${rcFilterVeg?' active':''}" onclick="toggleRcFilter('veg')">Veggie</button>`;
@@ -1062,9 +1062,10 @@ function renderRecipeCatalog() {
             : `<i class="lni lni-gallery" style="font-size:20px;line-height:20px;vertical-align:middle;display:inline-block;width:20px;height:20px;text-align:center;"></i>`}
         </button>`;
   const filterBar = `<div class="weekmenu-filter-bar rc-filter-bar">
+      ${regionDd}${sourceDd}
       <div class="rc-filter-scroll-wrap">
         <button class="rc-scroll-btn rc-scroll-left" onclick="rcScrollPills(-1)" aria-label="Scroll left">&#8249;</button>
-        <div class="rc-filter-pills" id="rcFilterPills">${regionDropdown}${traitPills}${vegPill}${sourceDropdown}${!noFilter ? `<button class="rc-clear-btn" onclick="toggleRcFilter('all')" aria-label="Filters wissen">&#10005;</button>` : ''}</div>
+        <div class="rc-filter-pills" id="rcFilterPills">${regionChip}${traitPills}${vegPill}${sourceChip}${!noFilter ? `<button class="rc-clear-btn" onclick="toggleRcFilter('all')" aria-label="Filters wissen">&#10005;</button>` : ''}</div>
         <button class="rc-scroll-btn rc-scroll-right" onclick="rcScrollPills(1)" aria-label="Scroll right">&#8250;</button>
       </div>
       <div class="rc-view-btns">
@@ -2346,7 +2347,8 @@ window.saveCustom = function() {
 
 // ── Menu ──────────────────────────────────────────────────────────────
 window.openMenu = function() {
-  document.getElementById('sheetOverlay').classList.add('show');
+  if (document.getElementById('menuPopup').classList.contains('open')) { closeMenu(); return; }
+  if (window.innerWidth < 768) document.getElementById('sheetOverlay').classList.add('show');
   document.getElementById('menuPopup').classList.add('open');
 };
 window.closeMenu = function() {
