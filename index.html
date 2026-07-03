@@ -102,6 +102,13 @@
   </div>
 </header>
 
+<div id="listSearchBar" class="list-search-bar">
+  <div class="list-search-wrap">
+    <input type="text" id="listSearchInput" class="list-search-input" placeholder="Zoek of typ een product..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){closeListSearch();},150)" onkeydown="if(event.key==='Enter')closeListSearch()">
+    <div id="listSearchDropdown" class="list-search-dropdown"></div>
+  </div>
+</div>
+
 <nav class="bottom-nav">
   <button class="bottom-tab active" id="tab-list" onclick="switchTab('list')">
     <span class="tab-icon">
@@ -443,16 +450,6 @@
   </div>
 </div>
 
-<div id="fabSearchModal" class="bottom-sheet fab-search-modal">
-  <div id="fabSearchResults" class="fab-search-results"></div>
-  <div class="fab-search-header">
-    <form action="javascript:void(0)" onsubmit="closeFabSearch()" style="display:contents;">
-      <input type="text" id="fabSearchInput" class="modal-input" placeholder="Zoek of typ een product..." style="margin:0;flex:1;" oninput="onFabSearch(this.value)" onkeydown="if(event.key==='Enter') closeFabSearch()" onkeyup="if(event.key==='Enter') closeFabSearch()" onblur="setTimeout(function(){if(!document.getElementById('fabSearchModal').contains(document.activeElement))closeFabSearch();},150)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search">
-      <button type="submit" hidden></button>
-    </form>
-    <button onclick="closeFabSearch()" class="fab-search-close">✕</button>
-  </div>
-</div>
 
 
 <div id="weekmenuActionSheet" class="bottom-sheet">
@@ -2039,7 +2036,9 @@ window.switchTab = function(tab) {
   document.getElementById('tab-recipes').classList.toggle('active', tab==='recipes');
   document.getElementById('main').classList.toggle('main--weekmenu', tab==='weekmenu');
   document.getElementById('main').classList.toggle('main--recipes', tab==='recipes');
-  document.querySelector('.fab').classList.remove('fab-hidden');
+  document.querySelector('.fab').classList.toggle('fab-hidden', tab==='list');
+  document.getElementById('listSearchBar').style.display = tab==='list' ? '' : 'none';
+  closeListSearch();
   render();
 };
 
@@ -2167,7 +2166,6 @@ function positionNoteModal() {
   modal.style.paddingBottom = getKeyboardOffset() + 'px';
 }
 function onViewportChange() {
-  positionFabSheet();
   positionCatalogSheet();
   positionMealSheet();
   positionNoteModal();
