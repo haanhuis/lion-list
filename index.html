@@ -106,7 +106,7 @@
   <div class="list-search-wrap">
     <div class="list-search-row">
       <i class="lni lni-search-1 list-search-icon"></i>
-      <input type="text" id="listSearchInput" class="list-search-input" placeholder="Zoek of typ een product..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){closeListSearch();},150)" onkeydown="if(event.key==='Enter')closeListSearch()">
+      <input type="text" id="listSearchInput" class="list-search-input" placeholder="Voeg product toe..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){closeListSearch();},150)" onkeydown="if(event.key==='Enter')closeListSearch()">
     </div>
     <div id="listSearchDropdown" class="list-search-dropdown"></div>
   </div>
@@ -129,8 +129,8 @@
   </button>
   <button class="bottom-tab" id="tab-recipes" onclick="switchTab('recipes')">
     <span class="tab-icon">
-      <svg class="tab-icon-outline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.966 8.966 0 0 0-6 2.292m0-14.25v14.25"/></svg>
-      <svg class="tab-icon-filled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.25 4.533A9.007 9.007 0 0 0 6 3a9.007 9.007 0 0 0-2.25.289v13.5A9.008 9.008 0 0 1 6 16.5a9.007 9.007 0 0 1 5.25 1.676V4.533ZM12.75 18.176A9.008 9.008 0 0 1 18 16.5a9.008 9.008 0 0 1 2.25.289V3.289A9.007 9.007 0 0 0 18 3a9.007 9.007 0 0 0-5.25 1.533v13.643Z"/></svg>
+      <svg class="tab-icon-outline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="22" height="22" aria-hidden="true"><path d="M10.7811 1C10.2069 1 9.74198 1.46522 9.74198 2.03937C9.74198 2.03971 9.74198 2.10834 9.74198 2.23067C9.74198 2.83129 9.74198 4.72191 9.74198 6.01905C9.74198 6.51362 9.34074 6.91491 8.84587 6.91491C8.35095 6.91491 7.94997 6.51362 7.94997 6.01905C7.94997 4.45731 7.94997 2.11113 7.94997 2.11113C7.94997 1.53715 7.48445 1.07163 6.91025 1.07163C6.33611 1.07163 5.87075 1.53715 5.87075 2.11104C5.87075 2.11134 5.87075 2.18031 5.87075 2.302C5.87075 2.89209 5.87075 4.72492 5.87075 6.01896C5.87075 6.51354 5.46977 6.91482 4.97468 6.91482C4.47994 6.91482 4.07879 6.51354 4.07879 6.01896C4.07879 4.45847 4.07879 2.03929 4.07879 2.03929C4.07883 1.46522 3.61348 1 3.03954 1C2.46552 1 2 1.46522 2 2.03937C2 2.03971 2 2.10834 2 2.23067C2 3.08471 2 6.54297 2 7.20172C2.00034 7.31061 2.00915 7.41171 2.02385 7.51157C2.05195 7.69818 2.09956 7.88196 2.16552 8.07291C2.28123 8.40459 2.45379 8.75569 2.69489 9.11014C2.87575 9.37534 3.09519 9.64089 3.35854 9.89243C3.75308 10.2687 4.24838 10.6123 4.84526 10.8588C5.04356 10.9409 5.25372 11.0104 5.47325 11.0688V22.4197C5.47325 22.7404 5.73317 23 6.05393 23H6.9103H7.76679C8.08764 23 8.34756 22.7404 8.34756 22.4197V11.0697C8.62213 10.9967 8.88149 10.9043 9.12293 10.7948C9.59417 10.5816 9.9985 10.308 10.3359 10.0081C10.8426 9.55723 11.1999 9.05299 11.4398 8.5781C11.5596 8.33971 11.6504 8.10819 11.7147 7.88381C11.7472 7.77183 11.7728 7.66106 11.7908 7.549C11.8089 7.43693 11.8205 7.32401 11.8205 7.20172C11.8205 6.44908 11.8205 2.03937 11.8205 2.03937C11.8204 1.46522 11.3549 1 10.7811 1Z" stroke="currentColor" stroke-width="1.5"/><path d="M21.8413 1.17308C21.5763 0.996434 21.2471 0.95368 20.9473 1.05096C20.9197 1.05955 20.8921 1.06815 20.8651 1.07936L18.1114 2.2323C17.78 2.3707 17.544 2.6705 17.4866 3.02482L16.7757 11.366C16.7278 11.6633 16.8111 11.9672 17.0044 12.1978C17.1976 12.429 19.3664 14.327 19.3664 14.327V22.4064C19.3664 22.7342 19.6324 23 19.9599 23H20.9473H21.7108C22.0387 23 22.3047 22.7343 22.3047 22.4064V11.3921V10.8059V10.5715V10.0991V2.03744C22.3047 1.68978 22.1307 1.36541 21.8413 1.17308Z" stroke="currentColor" stroke-width="1.5"/></svg>
+      <svg class="tab-icon-filled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="22" height="22" aria-hidden="true"><path d="M9.62879 1C9.0546 1 8.58964 1.46522 8.58964 2.03937C8.58964 2.03971 8.58964 2.10834 8.58964 2.23067C8.58964 2.83129 8.58964 4.72191 8.58964 6.01905C8.58964 6.51362 8.18839 6.91491 7.69352 6.91491C7.19861 6.91491 6.79763 6.51362 6.79763 6.01905C6.79763 4.45731 6.79763 2.11113 6.79763 2.11113C6.79763 1.53715 6.3321 1.07163 5.75791 1.07163C5.18376 1.07163 4.71841 1.53715 4.71841 2.11104C4.71841 2.11134 4.71841 2.18031 4.71841 2.302C4.71841 2.89209 4.71841 4.72492 4.71841 6.01896C4.71841 6.51354 4.31743 6.91482 3.82234 6.91482C3.3276 6.91482 2.92644 6.51354 2.92644 6.01896C2.92644 4.45847 2.92644 2.03929 2.92644 2.03929C2.92648 1.46522 2.46113 1 1.8872 1C1.31318 1 0.847656 1.46522 0.847656 2.03937C0.847656 2.03971 0.847656 2.10834 0.847656 2.23067C0.847656 3.08471 0.847656 6.54297 0.847656 7.20172C0.848 7.31061 0.856809 7.41171 0.871504 7.51157C0.899605 7.69818 0.947215 7.88196 1.01317 8.07291C1.12889 8.40459 1.30145 8.75569 1.54255 9.11014C1.7234 9.37534 1.94284 9.64089 2.2062 9.89243C2.60074 10.2687 3.09604 10.6123 3.69292 10.8588C3.89122 10.9409 4.10138 11.0104 4.32091 11.0688V22.4197C4.32091 22.7404 4.58082 23 4.90159 23H5.75795H6.61445C6.9353 23 7.19522 22.7404 7.19522 22.4197V11.0697C7.46979 10.9967 7.72914 10.9043 7.97059 10.7948C8.44182 10.5816 8.84616 10.308 9.18351 10.0081C9.69024 9.55723 10.0475 9.05299 10.2875 8.5781C10.4073 8.33971 10.4981 8.10819 10.5624 7.88381C10.5949 7.77183 10.6205 7.66106 10.6385 7.549C10.6566 7.43693 10.6681 7.32401 10.6681 7.20172C10.6681 6.44908 10.6681 2.03937 10.6681 2.03937C10.6681 1.46522 10.2026 1 9.62879 1Z" fill="currentColor"/><path d="M20.689 1.17308C20.4239 0.996434 20.0948 0.95368 19.795 1.05096C19.7673 1.05955 19.7398 1.06815 19.7127 1.07936L16.9591 2.2323C16.6276 2.3707 16.3917 2.6705 16.3342 3.02482L15.6233 11.366C15.5755 11.6633 15.6587 11.9672 15.852 12.1978C16.0453 12.429 18.214 14.327 18.214 14.327V22.4064C18.214 22.7342 18.4801 23 18.8075 23H19.7949H20.5585C20.8864 23 21.1523 22.7343 21.1523 22.4064V11.3921V10.8059V10.5715V10.0991V2.03744C21.1524 1.68978 20.9784 1.36541 20.689 1.17308Z" fill="currentColor"/></svg>
     </span>
     <span class="bottom-tab-label"><span id="tabRecipesText">Recepten</span></span>
   </button>
@@ -723,7 +723,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v95';
+const APP_VERSION = 'v96';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -758,7 +758,6 @@ let errorLog = [];
 let syncStatus = 'pending';
 let catalogLoaded = false;
 let firebaseConnected = false;
-let collapsedCats = { '__done__': true };
 let hideDone = localStorage.getItem('hideDone') !== 'false';
 let toastTimer = null;
 
@@ -895,11 +894,9 @@ function renderList() {
   CATEGORIES.forEach(cat => {
     const catItems = byCat[cat.id];
     if (!catItems || !catItems.length) return;
-    const col = collapsedCats[cat.id] ? 'collapsed' : '';
-    html += `<div class="category-section ${col}" id="cat-${cat.id}">
-      <div class="category-header" onclick="toggleCat('${cat.id}')">
+    html += `<div class="category-section" id="cat-${cat.id}">
+      <div class="category-header">
         <div class="cat-left"><span class="cat-emoji">${cat.emoji}</span><span class="cat-name">${cat.name}</span></div>
-        <span class="cat-chevron">▾</span>
       </div>
       <div class="category-items">${catItems.map(([id,item]) => renderItem(id,item)).join('')}</div>
     </div>`;
@@ -907,22 +904,18 @@ function renderList() {
 
   const other = byCat['other']||[];
   if (other.length) {
-    const col = collapsedCats['other'] ? 'collapsed' : '';
-    html += `<div class="category-section ${col}" id="cat-other">
-      <div class="category-header" onclick="toggleCat('other')">
+    html += `<div class="category-section" id="cat-other">
+      <div class="category-header">
         <div class="cat-left"><span class="cat-emoji">📌</span><span class="cat-name">${t('cat_other')}</span></div>
-        <span class="cat-chevron">▾</span>
       </div>
       <div class="category-items">${other.map(([id,item]) => renderItem(id,item)).join('')}</div>
     </div>`;
   }
 
   if (done.length && !hideDone) {
-    const doneCol = collapsedCats['__done__'] !== false ? 'collapsed' : '';
-    html += `<div class="checked-section category-section ${doneCol}" id="cat-__done__">
-      <div class="category-header" onclick="toggleCat('__done__')">
+    html += `<div class="checked-section category-section" id="cat-__done__">
+      <div class="category-header">
         <div class="cat-left"><span class="cat-name">${t('cat_done')}</span></div>
-        <span class="cat-chevron">▾</span>
       </div>
       <div class="category-items">${done.map(([id,item]) => renderItem(id,item)).join('')}</div>
     </div>`;
@@ -953,10 +946,9 @@ function renderBrowse() {
     CATEGORIES.forEach(cat => {
       const products = [...cat.products].sort((a,b)=>a.localeCompare(b,'nl'));
       if (!products.length) return;
-      html += `<div class="category-section collapsed" id="bcat-${cat.id}">
-        <div class="category-header" onclick="this.closest('.category-section').classList.toggle('collapsed')">
+      html += `<div class="category-section" id="bcat-${cat.id}">
+        <div class="category-header">
           <div class="cat-left"><span class="cat-emoji">${cat.emoji}</span><span class="cat-name">${cat.name}</span></div>
-          <span class="cat-chevron">▾</span>
         </div>
         <div class="category-items">
           ${products.map(p => {
@@ -1812,12 +1804,6 @@ window.saveMeal = function() {
 };
 
 // ── Actions ───────────────────────────────────────────────────────────
-window.toggleCat = function(catId) {
-  collapsedCats[catId] = !collapsedCats[catId];
-  const el = document.getElementById('cat-'+catId);
-  if (el) el.classList.toggle('collapsed', collapsedCats[catId]);
-};
-
 window.checkItem = function(id) {
   const item = list[id]; if(!item) return;
   setSyncBar('syncing');
