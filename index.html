@@ -720,7 +720,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v85';
+const APP_VERSION = 'v86';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -2230,14 +2230,7 @@ function renderFabResults(val) {
   if (!container) return;
 
   if (!q) {
-    const recentHistory = [...loadHistory()].reverse()
-      .filter(entry => {
-        const sep = entry.lastIndexOf('|');
-        const name = entry.slice(0, sep);
-        const catId = entry.slice(sep + 1);
-        return !Object.values(list).find(i => i.name===name && i.catId===catId && !i.checked);
-      })
-      .slice(0, 5);
+    const recentHistory = [...loadHistory()].reverse().slice(0, 5);
     if (recentHistory.length === 0) {
       container.innerHTML = '';
       container.classList.remove('show');
