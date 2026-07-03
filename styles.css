@@ -1,6 +1,6 @@
 :root {
     --brandColor: #222;
-    --brandColor-light: #E5F5EE;
+    --brandColor-light: var(--grey);
     --green: #00a651;
     --grey: #f5f5f5;
     --grey-mid: #e0e0e0;
