@@ -2015,7 +2015,7 @@ main.main--recipes {
     border-radius: 12px;
     padding: 0 14px;
     height: 40px;
-    border: 1.5px solid transparent;
+    border: 1.5px solid rgba(0,0,0,0.2);
     transition: border-color 0.15s;
 }
 .list-search-row:focus-within {
