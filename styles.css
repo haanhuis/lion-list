@@ -544,12 +544,6 @@ body {
 
 .standalone .bottom-nav {
     bottom: 0;
-    left: 0;
-    right: 0;
-    border-radius: 20px 20px 0 0;
-    border: none;
-    border-top: 1px solid rgba(0,0,0,0.08);
-    padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* ── Material Design 3 navigation bar ───────────────────────────────
