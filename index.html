@@ -104,7 +104,10 @@
 
 <div id="listSearchBar" class="list-search-bar">
   <div class="list-search-wrap">
-    <input type="text" id="listSearchInput" class="list-search-input" placeholder="Zoek of typ een product..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){closeListSearch();},150)" onkeydown="if(event.key==='Enter')closeListSearch()">
+    <div class="list-search-row">
+      <i class="lni lni-search-1 list-search-icon"></i>
+      <input type="text" id="listSearchInput" class="list-search-input" placeholder="Zoek of typ een product..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){closeListSearch();},150)" onkeydown="if(event.key==='Enter')closeListSearch()">
+    </div>
     <div id="listSearchDropdown" class="list-search-dropdown"></div>
   </div>
 </div>
@@ -720,7 +723,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v86';
+const APP_VERSION = 'v87';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
