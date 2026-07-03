@@ -469,7 +469,7 @@
 </div>
 
 <div class="bottom-fade"></div>
-<label class="fab" for="fabTriggerInput" onclick="openFabSearch(event)"><i class="lni lni-plus"></i></label>
+<label class="fab fab-hidden" for="fabTriggerInput" onclick="openFabSearch(event)"><i class="lni lni-plus"></i></label>
 <input id="fabTriggerInput" type="text" class="hidden-input" autocomplete="off">
 <div class="toast" id="toast"></div>
 <div class="toast update-toast" id="updateToast">New app update available &nbsp;<button class="update-toast-btn" id="updateToastBtn">Update</button></div>
@@ -587,8 +587,7 @@ function applyLocaleToDOM() {
   const svl = document.getElementById('shareViaLabel'); if (svl) svl.textContent = t('share_via');
   const svd = document.getElementById('shareViaDesc'); if (svd) svd.textContent = t('share_via_desc');
   const scb = document.getElementById('shareCancelBtn'); if (scb) scb.textContent = t('share_cancel');
-  // FAB search
-  const fsi = document.getElementById('fabSearchInput'); if (fsi) fsi.placeholder = t('search_placeholder');
+  const lsi = document.getElementById('listSearchInput'); if (lsi) lsi.placeholder = t('search_placeholder');
 }
 
 window.openLocaleSheet = function() {
@@ -721,7 +720,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v83';
+const APP_VERSION = 'v84';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -1927,7 +1926,7 @@ window.saveNote = function() {
 
 // ── Custom product ─────────────────────────────────────────────────────
 window.openCustom = function(prefill) {
-  closeFabSearch();
+  closeListSearch();
   document.getElementById('customCat').innerHTML = CATEGORIES.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
   const prefillCap = prefill ? prefill.charAt(0).toUpperCase() + prefill.slice(1) : '';
   document.getElementById('customName').value = prefillCap;
@@ -2139,16 +2138,6 @@ function getKeyboardOffset() {
   if (!vv) return 0;
   return window.innerHeight - (vv.offsetTop + vv.height);
 }
-function positionFabSheet() {
-  const modal = document.getElementById('fabSearchModal');
-  if (!modal.classList.contains('open')) return;
-  const vv = window.visualViewport;
-  const availableHeight = vv ? vv.height : window.innerHeight;
-  modal.style.bottom = getKeyboardOffset() + 'px';
-  if (modal.classList.contains('with-results')) {
-    modal.style.height = Math.round(availableHeight * 0.7) + 'px';
-  }
-}
 function positionCatalogSheet() {
   const sheet = document.getElementById('catalogSheet');
   if (!sheet.classList.contains('open')) return;
@@ -2223,42 +2212,25 @@ window.openFabSearch = function(e) {
     return;
   }
   if (currentTab === 'browse') { e?.preventDefault(); openCatalogSheet(); return; }
-  const trigger = document.getElementById('fabTriggerInput');
-  trigger.value = '';
-  trigger.focus({ preventScroll: true });
-
-  const modal = document.getElementById('fabSearchModal');
-  modal.classList.add('open');
-  document.getElementById('sheetOverlay').classList.add('show');
-  positionFabSheet();
-  renderFabResults('');
-
-  setTimeout(() => {
-    const real = document.getElementById('fabSearchInput');
-    real.value = '';
-    real.focus({ preventScroll: true });
-    trigger.blur();
-    positionFabSheet();
-  }, 80);
 };
-window.closeFabSearch = function() {
-  const modal = document.getElementById('fabSearchModal');
-  modal.classList.remove('open');
-  modal.classList.remove('with-results');
-  modal.style.bottom = '';
-  modal.style.height = '';
-  document.getElementById('sheetOverlay').classList.remove('show');
-  document.getElementById('fabSearchInput').value = '';
-  document.getElementById('fabSearchResults').innerHTML = '';
+window.openListSearch = function() {
+  renderFabResults(document.getElementById('listSearchInput').value);
+  document.getElementById('listSearchDropdown').classList.add('show');
 };
-
-window.onFabSearch = function(val) { renderFabResults(val); };
+window.closeListSearch = function() {
+  const dd = document.getElementById('listSearchDropdown');
+  if (dd) dd.classList.remove('show');
+};
+window.onListSearch = function(val) {
+  renderFabResults(val);
+  document.getElementById('listSearchDropdown').classList.add('show');
+};
 
 function renderFabResults(val) {
   const q = val.trim().toLowerCase();
-  const container = document.getElementById('fabSearchResults');
-  const modal = document.getElementById('fabSearchModal');
-  
+  const container = document.getElementById('listSearchDropdown');
+  if (!container) return;
+
   if (!q) {
     const recentHistory = [...loadHistory()].reverse()
       .filter(entry => {
@@ -2270,11 +2242,8 @@ function renderFabResults(val) {
       .slice(0, 5);
     if (recentHistory.length === 0) {
       container.innerHTML = '';
-      modal.classList.remove('with-results');
-      modal.classList.remove('recent-mode');
-      modal.style.height = '';
+      container.classList.remove('show');
     } else {
-      modal.classList.add('recent-mode');
       container.innerHTML = `<div class="fab-section-label">${t('recent')}</div>` +
         recentHistory.map(entry => {
           const sep = entry.lastIndexOf('|');
@@ -2289,13 +2258,11 @@ function renderFabResults(val) {
             ${inList ? `<span class="sri-added">${t('pi_inlist')}</span>` : ''}
           </div>`;
         }).join('');
-      modal.classList.remove('with-results');
-      modal.style.height = '';
+      container.classList.add('show');
     }
     return;
   }
 
-  modal.classList.remove('recent-mode');
   // Build set of previously used product names from persistent history + active list
   const usedKeys = loadHistory();
   Object.values(list).forEach(i => usedKeys.add(i.name + '|' + i.catId));
@@ -2349,27 +2316,20 @@ function renderFabResults(val) {
   }
 
   container.innerHTML = html;
-  
-  if (hasResults) {
-    modal.classList.add('with-results');
-  } else {
-    modal.classList.remove('with-results');
-    modal.style.height = '';
-  }
+  container.classList.add('show');
 }
 
 window.fabAdd = function(catId, name, k) {
   addProduct(name, catId);
   showToast(t('toast_added').replace('{name}', name.split('|')[0].trim()));
-  // Reset search and keep modal open for adding more products
-  const input = document.getElementById('fabSearchInput');
+  const input = document.getElementById('listSearchInput');
   input.value = '';
   renderFabResults('');
   setTimeout(() => input.focus({ preventScroll: true }), 0);
 };
 
 window.fabAddNew = function(val) {
-  closeFabSearch();
+  closeListSearch();
   openCustom(val);
 };
 
@@ -2402,7 +2362,7 @@ window.closeMenu = function() {
 window.closeAllSheets = function() {
   closeLocaleSheet();
   closeMenu();
-  closeFabSearch();
+  closeListSearch();
   closeMealSheet();
   closeCatalogSheet();
   closeGeneratorSheet();
