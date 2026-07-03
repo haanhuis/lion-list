@@ -34,6 +34,12 @@ html, body {
     overflow: clip;
 }
 
+@supports (-webkit-touch-callout: none) {
+    html, body {
+        height: -webkit-fill-available;
+    }
+}
+
 body {
     font-family: 'Outfit', sans-serif;
     background: var(--bg);
@@ -537,6 +543,7 @@ body {
 }
 
 .platform-ios.standalone .bottom-nav {
+    bottom: calc(env(safe-area-inset-bottom) + 10px);
     padding-bottom: 0;
 }
 
@@ -1416,7 +1423,7 @@ main.main--recipes {
 }
 
 .update-toast-btn {
-    background: var(--brandColor);
+    background: white;
     color: #000;
     border: none;
     border-radius: 6px;
@@ -1434,14 +1441,15 @@ main.main--recipes {
 }
 
 .meal-toast-undo {
-    background: none;
+    background: white;
+    color: #000;
     border: none;
-    color: var(--brandColor);
+    border-radius: 6px;
+    padding: 3px 10px;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    padding: 0;
 }
 
 .today-pill {
@@ -3098,6 +3106,12 @@ main.main--recipes {
         box-shadow: 4px 0 24px rgba(0,0,0,0.1);
     }
     #menuPopup .sheet-handle { display: none; }
+
+    .sheet-overlay {
+        left: 220px;
+        top: 58px;
+        background: rgba(0,0,0,0.15);
+    }
 
     #main .sri-add {
         background: none;
