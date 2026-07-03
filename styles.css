@@ -718,7 +718,7 @@ main.main--recipes {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--grey);
+    background: white;
     padding: 8px 16px;
     cursor: pointer;
     user-select: none;
@@ -3215,6 +3215,10 @@ main.main--recipes {
         border-color: var(--border);
         background: var(--grey);
     }
+
+    /* Category header */
+    .category-header { background: #404040; }
+    .category-header:active { background: #4a4a4a; }
 
     /* Header + list search bar: dark bg in dark mode */
     .header { background: var(--bg-card); border-bottom-color: rgba(255,255,255,0.1); }
