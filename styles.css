@@ -9,7 +9,7 @@
     --radius: 14px;
     --shadow: 0 2px 12px rgba(0,0,0,0.08);
     --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
-    --bg: white;
+    --bg: #f5f5f5;
     --bg-card: white;
     --bg-input: white;
     --text-secondary: #222;
@@ -591,6 +591,7 @@ main {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding: 0 0 calc(100px + 60px + 40px);
+    background-color: var(--bg);
 }
 
 
@@ -717,7 +718,7 @@ main.main--recipes {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--grey);
+    background: white;
     padding: 8px 16px;
     cursor: pointer;
     user-select: none;
@@ -2996,7 +2997,7 @@ main.main--recipes {
         gap: 4px;
         box-shadow: none;
         z-index: 100;
-        background: var(--bg);
+        background: var(--white);
     }
 
     .bottom-tab {
@@ -3204,6 +3205,10 @@ main.main--recipes {
 
     /* Update-available toast action button */
     .toast-action-btn { color: var(--brandColor); }
+
+    /* Category header */
+    .category-header { background: #404040; }
+    .category-header:active { background: #4a4a4a; }
 
     /* Category badge */
     .category-count { background: #555; color: var(--text); }
