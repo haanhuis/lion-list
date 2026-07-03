@@ -723,7 +723,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v88';
+const APP_VERSION = 'v89';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -2346,14 +2346,27 @@ window.saveCustom = function() {
 
 
 // ── Menu ──────────────────────────────────────────────────────────────
+let _menuOutsideHandler = null;
 window.openMenu = function() {
   if (document.getElementById('menuPopup').classList.contains('open')) { closeMenu(); return; }
   if (window.innerWidth < 768) document.getElementById('sheetOverlay').classList.add('show');
   document.getElementById('menuPopup').classList.add('open');
+  setTimeout(() => {
+    _menuOutsideHandler = function(e) {
+      const popup = document.getElementById('menuPopup');
+      const btn = document.getElementById('menuBtn');
+      if (!popup.contains(e.target) && !btn.contains(e.target)) closeMenu();
+    };
+    document.addEventListener('pointerdown', _menuOutsideHandler);
+  }, 0);
 };
 window.closeMenu = function() {
   document.getElementById('sheetOverlay').classList.remove('show');
   document.getElementById('menuPopup').classList.remove('open');
+  if (_menuOutsideHandler) {
+    document.removeEventListener('pointerdown', _menuOutsideHandler);
+    _menuOutsideHandler = null;
+  }
 };
 window.closeAllSheets = function() {
   closeLocaleSheet();
