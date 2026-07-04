@@ -372,9 +372,11 @@
 </div>
 
 <div id="menuPopup" class="bottom-sheet">
-<button class="menu-item" id="menuItemShare" onclick="closeMenu();openShare()"><i class="lni lni-user-multiple-4 icon-colored"></i> <span id="menuItemShareText">Lijst delen</span></button>
-  <button class="menu-item" id="menuItemConnect" onclick="menuConnectList()"><i class="lni lni-link-2-angular-right icon-colored"></i> <span>Verbinden met andere lijst</span></button>
+  <div class="sheet-handle"></div>
   <button class="menu-item" id="menuItemNewList" onclick="menuNewList()"><i class="lni lni-plus icon-colored"></i> <span>Nieuwe lijst</span></button>
+  <button class="menu-item" id="menuItemRename" onclick="closeMenu();menuRename()"><i class="lni lni-pencil-1 icon-colored"></i> <span>Lijstje hernoemen</span></button>
+  <button class="menu-item" id="menuItemShare" onclick="closeMenu();openShare()"><img src="add-user.svg" width="20" height="20" style="opacity:0.75;flex-shrink:0;margin-right:8px;" alt=""> <span id="menuItemShareText">Lijst delen</span></button>
+  <button class="menu-item" id="menuItemConnect" onclick="menuConnectList()"><i class="lni lni-link-2-angular-right icon-colored"></i> <span>Verbinden met andere lijst</span></button>
   <div style="height:1px;background:var(--grey-mid);margin:4px 0;"></div>
   <button class="menu-item" id="menuItemCheckAll" onclick="menuCheckAll()"><i class="lni lni-check-circle-1 icon-colored"></i> <span>Alles afvinken</span></button>
   <button class="menu-item" id="menuItemToggleDone" onclick="menuToggleDone()"><i class="lni lni-eye icon-colored"></i> <span>Verberg afgevinkte items</span></button>
@@ -409,11 +411,10 @@
 
 <div class="modal-overlay" id="connectModal" onclick="if(event.target===this)closeConnectModal()">
   <div class="modal-box">
-    <div style="height:1px;background:var(--grey-mid);margin:4px 0;"></div>
     <button class="menu-item" onclick="closeConnectModal();menuNewList()"><i class="lni lni-plus icon-colored"></i> <span>Nieuwe lijst</span></button>
-    <button class="menu-item" onclick="closeConnectModal();menuConnectInput()"><i class="lni lni-link-2-angular-right icon-colored"></i> <span>Verbinden met andere lijst</span></button>
     <button class="menu-item" onclick="closeConnectModal();menuRename()"><i class="lni lni-pencil-1 icon-colored"></i> <span>Lijstje hernoemen</span></button>
     <button class="menu-item" onclick="closeConnectModal();openShare()"><img src="add-user.svg" width="20" height="20" style="opacity:0.75;flex-shrink:0;margin-right:8px;" alt=""> <span>Lijst delen</span></button>
+    <button class="menu-item" onclick="closeConnectModal();menuConnectInput()"><i class="lni lni-link-2-angular-right icon-colored"></i> <span>Verbinden met andere lijst</span></button>
     <div id="connectModalRecent" style="display:none;margin-top:8px;">
       <div style="height:1px;background:var(--grey-mid);margin-bottom:8px;"></div>
       <p class="description-text mb-8" style="text-align:left; color: #222; font-size:14px;">Recente lijsten:</p>
@@ -730,7 +731,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v101';
+const APP_VERSION = 'v102';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
