@@ -737,7 +737,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v105';
+const APP_VERSION = 'v106';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -2260,10 +2260,15 @@ window.closeListSearch = function() {
 window.openListSearchSheet = function() {
   document.getElementById('sheetOverlay').classList.add('show');
   document.getElementById('listSearchBar').classList.add('open');
-  document.querySelector('.fab').style.display = 'none';
   renderFabResults('');
   positionListSearchSheet();
-  setTimeout(() => document.getElementById('listSearchInput').focus({ preventScroll: true }), 100);
+  const input = document.getElementById('listSearchInput');
+  // Focus synchronously, within the tap's gesture, so mobile browsers reliably raise the keyboard.
+  input.focus({ preventScroll: true });
+  setTimeout(() => {
+    input.focus({ preventScroll: true });
+    document.querySelector('.fab').style.display = 'none';
+  }, 100);
 };
 window.closeListSearchSheet = function() {
   document.getElementById('listSearchInput').blur();
