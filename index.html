@@ -731,7 +731,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v102';
+const APP_VERSION = 'v103';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -1018,7 +1018,21 @@ function renderRecipeCatalog() {
   const main = document.getElementById('main');
   main.classList.remove('main--weekmenu');
   if (!_recipeCatalog) {
-    main.innerHTML = '<div class="empty-state"><div class="empty-icon">📖</div><div class="empty-title">Recepten laden...</div></div>';
+    const skeletonCount = 8;
+    const skeletonGrid = `<div class="rc-skeleton-grid">${Array.from({length:skeletonCount},()=>`
+      <div class="rc-skeleton-card">
+        <div class="rc-skeleton-img skeleton"></div>
+        <div class="rc-skeleton-body">
+          <div class="rc-skeleton-title skeleton"></div>
+          <div class="rc-skeleton-sub skeleton"></div>
+        </div>
+      </div>`).join('')}</div>`;
+    const skeletonList = `<div class="rc-skeleton-list">${Array.from({length:skeletonCount},()=>`
+      <div class="rc-skeleton-row">
+        <div class="rc-skeleton-row-text skeleton"></div>
+        <div class="rc-skeleton-row-btn skeleton"></div>
+      </div>`).join('')}</div>`;
+    main.innerHTML = `<div class="rc-body">${recipeCatalogView === 'grid' ? skeletonGrid : skeletonList}</div>`;
     loadRecipeCatalog().then(() => { if (currentTab === 'recipes') renderRecipeCatalog(); });
     return;
   }
