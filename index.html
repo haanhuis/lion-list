@@ -91,7 +91,7 @@
         <line x1="3" y1="15" x2="17" y2="15"/>
       </svg>
     </button>
-    <div class="header-center" onclick="menuConnectList()" style="cursor:pointer;">
+    <div class="header-center" onclick="document.getElementById('connectModal').classList.contains('show')?closeConnectModal():menuConnectList()" style="cursor:pointer;">
       <img src="komisses-app-logo.svg" class="header-logo-img" alt="">
       <span class="header-list-name" id="headerListName"></span>
       <img src="double-arrows.svg" class="header-arrows-img" alt="">
@@ -101,6 +101,7 @@
     </button>
   </div>
 </header>
+<span id="listIdLabel" style="display:none"></span>
 
 <div id="listSearchBar" class="list-search-bar">
   <div class="list-search-wrap">
@@ -371,18 +372,7 @@
 </div>
 
 <div id="menuPopup" class="bottom-sheet">
-  <div class="sheet-handle"></div>
-  <div class="menu-header" id="menuHeader">
-    <div class="menu-header-text">
-      <span id="menuHeaderLabel">Huidige lijst</span><br>
-      <span id="listIdLabel" class="list-id-display">Verbinden...</span>
-    </div>
-    <div class="menu-header-actions">
-      <button class="menu-header-btn" id="menuItemRename" onclick="menuRename()" title="Lijst hernoemen"><i class="lni lni-pencil-1"></i></button>
-      <button class="menu-header-btn" id="menuItemRefresh" onclick="menuRefresh()" title="Lijst vernieuwen"><i class="lni lni-refresh-circle-1-clockwise"></i></button>
-    </div>
-  </div>
-  <button class="menu-item" id="menuItemShare" onclick="closeMenu();openShare()"><i class="lni lni-user-multiple-4 icon-colored"></i> <span id="menuItemShareText">Lijst delen</span></button>
+<button class="menu-item" id="menuItemShare" onclick="closeMenu();openShare()"><i class="lni lni-user-multiple-4 icon-colored"></i> <span id="menuItemShareText">Lijst delen</span></button>
   <button class="menu-item" id="menuItemConnect" onclick="menuConnectList()"><i class="lni lni-link-2-angular-right icon-colored"></i> <span>Verbinden met andere lijst</span></button>
   <button class="menu-item" id="menuItemNewList" onclick="menuNewList()"><i class="lni lni-plus icon-colored"></i> <span>Nieuwe lijst</span></button>
   <div style="height:1px;background:var(--grey-mid);margin:4px 0;"></div>
@@ -419,13 +409,14 @@
 
 <div class="modal-overlay" id="connectModal" onclick="if(event.target===this)closeConnectModal()">
   <div class="modal-box">
+    <div style="height:1px;background:var(--grey-mid);margin:4px 0;"></div>
     <button class="menu-item" onclick="closeConnectModal();menuNewList()"><i class="lni lni-plus icon-colored"></i> <span>Nieuwe lijst</span></button>
     <button class="menu-item" onclick="closeConnectModal();menuConnectInput()"><i class="lni lni-link-2-angular-right icon-colored"></i> <span>Verbinden met andere lijst</span></button>
     <button class="menu-item" onclick="closeConnectModal();menuRename()"><i class="lni lni-pencil-1 icon-colored"></i> <span>Lijstje hernoemen</span></button>
-    <button class="menu-item" onclick="closeConnectModal();openShare()"><img src="add-user.svg" width="20" height="20" style="opacity:0.75;flex-shrink:0;" alt=""> <span>Lijst delen</span></button>
+    <button class="menu-item" onclick="closeConnectModal();openShare()"><img src="add-user.svg" width="20" height="20" style="opacity:0.75;flex-shrink:0;margin-right:8px;" alt=""> <span>Lijst delen</span></button>
     <div id="connectModalRecent" style="display:none;margin-top:8px;">
       <div style="height:1px;background:var(--grey-mid);margin-bottom:8px;"></div>
-      <p class="description-text mb-8" style="text-align:left; color: #222;">Recente lijsten:</p>
+      <p class="description-text mb-8" style="text-align:left; color: #222; font-size:14px;">Recente lijsten:</p>
       <div id="connectModalRecentBtns"></div>
     </div>
   </div>
@@ -739,7 +730,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v100';
+const APP_VERSION = 'v101';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
