@@ -417,23 +417,33 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="connectModal">
+<div class="modal-overlay" id="connectModal" onclick="if(event.target===this)closeConnectModal()">
   <div class="modal-box">
-    <div class="sheet-header">
-      <button class="sheet-btn-cancel" id="connectModalCancelBtn" onclick="closeConnectModal()">Annuleren</button>
-      <span class="sheet-header-title" id="connectModalTitleText">Verbinden met lijst</span>
-      <button class="sheet-btn-submit" id="connectModalBtn" onclick="confirmConnectModal()" disabled>Verbinden</button>
-    </div>
-    <input type="url" class="modal-input mb-10" id="connectModalInput" placeholder="Plak de gedeelde link hier..."
-      autocomplete="off" autocorrect="off" spellcheck="false"
-      oninput="validateConnectModal()"
-      onkeydown="if(event.key==='Enter') confirmConnectModal()">
-    <div id="connectModalError" class="error-text mb-8">Ongeldige link. Plak de volledige URL.</div>
-    <div id="connectModalRecent" style="display:none;margin-top:4px;margin-bottom:12px;">
-      <p class="description-text mb-8" style="text-align:left; color: #222;">Of verbind opnieuw met een recente lijst:</p>
+    <button class="menu-item" onclick="closeConnectModal();menuNewList()"><i class="lni lni-plus icon-colored"></i> <span>Nieuwe lijst</span></button>
+    <button class="menu-item" onclick="closeConnectModal();menuConnectInput()"><i class="lni lni-link-2-angular-right icon-colored"></i> <span>Verbinden met andere lijst</span></button>
+    <button class="menu-item" onclick="closeConnectModal();menuRename()"><i class="lni lni-pencil-1 icon-colored"></i> <span>Lijstje hernoemen</span></button>
+    <button class="menu-item" onclick="closeConnectModal();openShare()"><img src="add-user.svg" width="20" height="20" style="opacity:0.75;flex-shrink:0;" alt=""> <span>Lijst delen</span></button>
+    <div id="connectModalRecent" style="display:none;margin-top:8px;">
+      <div style="height:1px;background:var(--grey-mid);margin-bottom:8px;"></div>
+      <p class="description-text mb-8" style="text-align:left; color: #222;">Recente lijsten:</p>
       <div id="connectModalRecentBtns"></div>
     </div>
   </div>
+  </div>
+</div>
+
+<div id="connectInputSheet" class="bottom-sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <button class="sheet-btn-cancel" onclick="closeConnectInputSheet()">Annuleren</button>
+    <span class="sheet-header-title" id="connectModalTitleText">Verbinden met lijst</span>
+    <button class="sheet-btn-submit" id="connectModalBtn" onclick="confirmConnectModal()" disabled>Verbinden</button>
+  </div>
+  <input type="url" class="modal-input mb-10" id="connectModalInput" placeholder="Plak de gedeelde link hier..."
+    autocomplete="off" autocorrect="off" spellcheck="false"
+    oninput="validateConnectModal()"
+    onkeydown="if(event.key==='Enter') confirmConnectModal()">
+  <div id="connectModalError" class="error-text mb-8" style="display:none;">Ongeldige link. Plak de volledige URL.</div>
 </div>
 
 <div class="share-modal" id="shareModal" onclick="if(event.target===this)closeShare()">
@@ -462,6 +472,12 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd"/></svg>
     </span>
     <span class="weekmenu-action-label" id="addMealActionLabel">Recept toevoegen</span>
+  </button>
+  <button class="weekmenu-action-item" onclick="closeWeekmenuActionSheet(); switchTab('recipes'); setTimeout(()=>document.getElementById('rcSearchInput')?.focus(),50)">
+    <span class="weekmenu-action-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd"/></svg>
+    </span>
+    <span class="weekmenu-action-label">Recept zoeken</span>
   </button>
   <button class="weekmenu-action-item" onclick="closeWeekmenuActionSheet(); openGeneratorSheet()">
     <span class="weekmenu-action-icon">
@@ -723,7 +739,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v99';
+const APP_VERSION = 'v100';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -889,7 +905,7 @@ function renderList() {
   const byCat = {};
   active.forEach(([id, item]) => { const c = item.catId||'other'; if(!byCat[c])byCat[c]=[]; byCat[c].push([id,item]); });
 
-  let html = ``;
+  let html = `<div style="height:10px;flex-shrink:0"></div>`;
 
   CATEGORIES.forEach(cat => {
     const catItems = byCat[cat.id];
@@ -2349,6 +2365,7 @@ window.closeAllSheets = function() {
   closeCatalogSheet();
   closeGeneratorSheet();
   closeWeekmenuActionSheet();
+  closeConnectInputSheet();
 };
 
 // ── Generator sheet ───────────────────────────────────────────────────
@@ -2581,9 +2598,11 @@ window.menuNerdStuff = function() {
 window.closeNerd = function() { document.getElementById('nerdModal').classList.remove('show'); };
 window.menuConnectList = function() {
   closeMenu();
-  document.getElementById('connectModalInput').value = '';
-  document.getElementById('connectModalError').style.display = 'none';
-  document.getElementById('connectModalBtn').disabled = true;
+
+  const headerLabel = document.getElementById('connectModalHeaderLabel');
+  if (headerLabel) headerLabel.textContent = document.getElementById('menuHeaderLabel')?.textContent || '';
+  const listId = document.getElementById('connectModalListId');
+  if (listId) listId.textContent = document.getElementById('listIdLabel')?.textContent || '';
 
   const recent = JSON.parse(localStorage.getItem('recentLists') || '[]');
   const section = document.getElementById('connectModalRecent');
@@ -2601,7 +2620,19 @@ window.menuConnectList = function() {
   }
 
   document.getElementById('connectModal').classList.add('show');
+};
+window.menuConnectInput = function() {
+  closeConnectModal();
+  document.getElementById('connectModalInput').value = '';
+  document.getElementById('connectModalError').style.display = 'none';
+  document.getElementById('connectModalBtn').disabled = true;
+  document.getElementById('sheetOverlay').classList.add('show');
+  document.getElementById('connectInputSheet').classList.add('open');
   setTimeout(() => document.getElementById('connectModalInput').focus(), 80);
+};
+window.closeConnectInputSheet = function() {
+  document.getElementById('sheetOverlay').classList.remove('show');
+  document.getElementById('connectInputSheet').classList.remove('open');
 };
 window.connectToRecentListModal = function(id) {
   closeConnectModal();
@@ -2621,7 +2652,7 @@ window.confirmConnectModal = function() {
   const val = document.getElementById('connectModalInput').value;
   const id = extractListIdFromUrl(val);
   if (!id) return;
-  closeConnectModal();
+  closeConnectInputSheet();
   initList(id);
 };
 window.menuRename = function() {

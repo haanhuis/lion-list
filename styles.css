@@ -550,10 +550,15 @@ body {
    M3: 80dp bar, 24dp icons, 12sp/500 labels, 64×32dp indicator pill
    behind icon in secondary-container color on active tab             */
 .platform-android .bottom-nav {
-    border-top: none;
-    box-shadow: 0 -1px 3px rgba(0,0,0,0.08), 0 -1px 2px rgba(0,0,0,0.06);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    box-shadow: none;
     padding-top: 10px;
-    padding-bottom:10px;
+    padding-bottom: 10px;
     align-items: center;
 }
 
@@ -569,6 +574,9 @@ body {
 }
 
 .platform-android .bottom-tab .tab-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 64px;
     height: 32px;
     border-radius: 16px;
@@ -576,10 +584,12 @@ body {
 }
 
 .platform-android .bottom-tab.active .tab-icon {
-    background: var(--grey-mid);
+    background: rgba(0,0,0,0.08);
 }
 
 .platform-android .bottom-tab.active {
+    background: none;
+    border-radius: 0;
     color: #222;
     font-weight: 500;
 }
@@ -589,7 +599,7 @@ main {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding: 0 0 calc(100px + 60px + 40px);
-    background-color: var(--bg);
+    background-color: var(--bg-card);
 }
 
 
@@ -718,10 +728,10 @@ main.main--recipes {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: white;
+    background: var(--grey);
     padding: 8px 16px;
-    border-top: 1px solid rgba(0,0,0,0.1);
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin: 0px 15px;
+    border-radius: 8px;
 }
 
 .category-section:first-child .category-header {
@@ -742,6 +752,7 @@ main.main--recipes {
 .cat-name {
     font-weight: 600;
     font-size: 15px;
+    color: var(--text);
 }
 
 .cat-count {
@@ -1093,6 +1104,36 @@ main.main--recipes {
     display: flex;
 }
 
+/* connectModal: drops down from beneath the header */
+#connectModal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    align-items: flex-start;
+    background: transparent;
+    z-index: 90;
+    transition: background 0.25s;
+}
+#connectModal.show {
+    visibility: visible;
+    pointer-events: auto;
+    background: rgba(0,0,0,0.15);
+}
+#connectModal .modal-box {
+    border-radius: 0 0 20px 20px;
+    padding-top: calc(54px + env(safe-area-inset-top, 0px));
+    padding-bottom: 16px;
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+    width: min(480px, 100vw);
+}
+#connectModal.show .modal-box {
+    transform: translateY(0);
+}
+#connectModal .menu-item {
+    padding: 14px 0;
+}
+
 .modal-box {
     background: var(--bg-card);
     border-radius: 20px 20px 0 0;
@@ -1146,7 +1187,7 @@ main.main--recipes {
 }
 
 .btn-primary {
-    background: var(--brandColor);
+    background: var(--green);
     color: white;
 }
 
@@ -1205,11 +1246,12 @@ main.main--recipes {
     display: block;
     width: 100%;
     margin-top: 16px;
-    padding: 10px;
-    background: none;
-    border:none;
-    color: var(--brandColor);
-    font-size: 14px;
+    padding: 14px;
+    background: #000;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
     font-weight: 600;
     text-align: center;
     cursor: pointer;
@@ -1500,7 +1542,9 @@ main.main--recipes {
 }
 
 .menu-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
     padding: 14px 18px;
     background: none;
@@ -1668,7 +1712,7 @@ main.main--recipes {
     border: none;
     font-size: 15px;
     font-weight: 600;
-    color: var(--brandColor);
+    color: var(--green);
     cursor: pointer;
     padding: 8px;
     text-align: right;
@@ -3204,7 +3248,9 @@ main.main--recipes {
     }
 
     /* Category header */
-    .category-header { background: #404040; }
+    .category-header { background: var(--grey); }
+
+    .share-connect-btn { background: white; color: #000; }
 
     /* Header + list search bar: dark bg in dark mode */
     .header { background: var(--bg-card); }
