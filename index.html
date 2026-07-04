@@ -103,13 +103,19 @@
 </header>
 <span id="listIdLabel" style="display:none"></span>
 
-<div id="listSearchBar" class="list-search-bar">
+<div id="listSearchBar" class="bottom-sheet list-search-sheet">
+  <div class="sheet-handle"></div>
   <div class="list-search-wrap">
-    <div class="list-search-row">
-      <i class="lni lni-search-1 list-search-icon"></i>
-      <input type="text" id="listSearchInput" class="list-search-input" placeholder="Voeg product toe..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){closeListSearch();},150)" onkeydown="if(event.key==='Enter')closeListSearch()">
+    <div class="list-search-inputs">
+      <div class="list-search-row">
+        <i class="lni lni-search-1 list-search-icon"></i>
+        <input type="text" id="listSearchInput" class="list-search-input" placeholder="Voeg product toe..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){closeListSearch();},150)" onkeydown="if(event.key==='Enter')closeListSearchSheet()">
+        <button type="button" class="list-search-clear-btn" onclick="clearListSearch()" aria-label="Wis"><i class="lni lni-xmark"></i></button>
+      </div>
+      <button class="list-search-done-btn" onclick="closeListSearchSheet()" aria-label="Klaar"><i class="lni lni-check"></i></button>
     </div>
-    <div id="listSearchDropdown" class="list-search-dropdown"></div>
+    <div id="recentlyAdded" class="recently-added"></div>
+    <div id="listSearchResults" class="list-search-results"></div>
   </div>
 </div>
 
@@ -480,7 +486,7 @@
 </div>
 
 <div class="bottom-fade"></div>
-<label class="fab fab-hidden" for="fabTriggerInput" onclick="openFabSearch(event)"><i class="lni lni-plus"></i></label>
+<label class="fab" for="fabTriggerInput" onclick="openFabSearch(event)"><i class="lni lni-plus"></i></label>
 <input id="fabTriggerInput" type="text" class="hidden-input" autocomplete="off">
 <div class="toast" id="toast"></div>
 <div class="toast update-toast" id="updateToast">New app update available &nbsp;<button class="update-toast-btn" id="updateToastBtn">Update</button></div>
@@ -731,7 +737,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v103';
+const APP_VERSION = 'v104';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -1212,6 +1218,11 @@ function isPastDay(dayKey) {
   return diff >= 5;
 }
 
+function weekMenuEmptyStateHtml(showGenerateBtn = true) {
+  const generateBtn = `<button class="gen-trigger-btn" onclick="openGeneratorSheet()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:-2px;margin-right:4px;"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.261 1.035a2.25 2.25 0 0 0 1.908 1.908l1.035.261a.75.75 0 0 1 0 1.456l-1.035.261a2.25 2.25 0 0 0-1.908 1.908l-.261 1.035a.75.75 0 0 1-1.456 0l-.261-1.035a2.25 2.25 0 0 0-1.908-1.908l-1.035-.261a.75.75 0 0 1 0-1.456l1.035-.261a2.25 2.25 0 0 0 1.908-1.908l.261-1.035A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183a1.5 1.5 0 0 0 .948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395a1.5 1.5 0 0 0-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395a1.5 1.5 0 0 0 .948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z" clip-rule="evenodd"/></svg>${t('weekmenu_generate_btn')}</button>`;
+  return `<div class="empty-state"><div class="empty-icon">🍽️</div><div class="empty-title">${t('weekmenu_empty_title')}</div>${showGenerateBtn ? generateBtn : ''}</div>`;
+}
+
 function renderWeekMenu() {
   const main = document.getElementById('main');
   if (!_recipeCatalog) loadRecipeCatalog().then(() => renderWeekMenu());
@@ -1229,7 +1240,7 @@ function renderWeekMenu() {
 
   const allMeals = Object.entries(weekmenu).sort(([,a],[,b]) => (a.order ?? Infinity) - (b.order ?? Infinity));
   if (allMeals.length === 0) {
-    main.innerHTML = `<div class="empty-state"><div class="empty-icon">🍽️</div><div class="empty-title">${t('weekmenu_empty_title')}</div><button class="gen-trigger-btn" onclick="openGeneratorSheet()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;vertical-align:-2px;margin-right:4px;"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.261 1.035a2.25 2.25 0 0 0 1.908 1.908l1.035.261a.75.75 0 0 1 0 1.456l-1.035.261a2.25 2.25 0 0 0-1.908 1.908l-.261 1.035a.75.75 0 0 1-1.456 0l-.261-1.035a2.25 2.25 0 0 0-1.908-1.908l-1.035-.261a.75.75 0 0 1 0-1.456l1.035-.261a2.25 2.25 0 0 0 1.908-1.908l.261-1.035A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183a1.5 1.5 0 0 0 .948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395a1.5 1.5 0 0 0-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395a1.5 1.5 0 0 0 .948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z" clip-rule="evenodd"/></svg>${t('weekmenu_generate_btn')}</button></div>`;
+    main.innerHTML = weekMenuEmptyStateHtml();
     return;
   }
 
@@ -1242,8 +1253,11 @@ function renderWeekMenu() {
   }
 
   if (filtered.length === 0) {
-    const emptyMsg = weekmenuFilter === 'checked' ? 'Nog niets afgevinkt.' : 'Alle recepten zijn afgevinkt.';
-    main.innerHTML = filterBar + `<div class="empty-state" style="padding-top:32px;"><div class="empty-title" style="color:var(--text-muted);font-weight:400;">${emptyMsg}</div></div>`;
+    if (weekmenuFilter === 'open') {
+      main.innerHTML = filterBar + weekMenuEmptyStateHtml(false);
+      return;
+    }
+    main.innerHTML = filterBar + `<div class="empty-state" style="padding-top:32px;"><div class="empty-title" style="color:var(--text-muted);font-weight:400;">Nog niets afgevinkt.</div></div>`;
     return;
   }
 
@@ -1389,6 +1403,7 @@ function initMealSwipe(id) {
         if (weekmenuFilter === 'open') {
           const wrap = document.getElementById('mealwrap-' + id);
           if (wrap) wrap.remove();
+          if (!document.querySelector('.meal-flat-list .meal-card-wrap')) renderWeekMenu();
         } else {
           card.style.transition = 'none';
           card.style.transform = '';
@@ -1938,7 +1953,7 @@ window.saveNote = function() {
 
 // ── Custom product ─────────────────────────────────────────────────────
 window.openCustom = function(prefill) {
-  closeListSearch();
+  closeListSearchSheet();
   document.getElementById('customCat').innerHTML = CATEGORIES.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
   const prefillCap = prefill ? prefill.charAt(0).toUpperCase() + prefill.slice(1) : '';
   document.getElementById('customName').value = prefillCap;
@@ -2047,9 +2062,7 @@ window.switchTab = function(tab) {
   document.getElementById('tab-recipes').classList.toggle('active', tab==='recipes');
   document.getElementById('main').classList.toggle('main--weekmenu', tab==='weekmenu');
   document.getElementById('main').classList.toggle('main--recipes', tab==='recipes');
-  document.querySelector('.fab').classList.toggle('fab-hidden', tab==='list');
-  document.getElementById('listSearchBar').style.display = tab==='list' ? '' : 'none';
-  closeListSearch();
+  closeListSearchSheet();
   render();
 };
 
@@ -2166,10 +2179,17 @@ function positionNoteModal() {
   if (!modal.classList.contains('show')) return;
   modal.style.paddingBottom = getKeyboardOffset() + 'px';
 }
+function positionListSearchSheet() {
+  const sheet = document.getElementById('listSearchBar');
+  if (!sheet.classList.contains('open')) return;
+  const offset = getKeyboardOffset();
+  sheet.style.transform = offset > 0 ? `translateY(-${offset}px)` : '';
+}
 function onViewportChange() {
   positionCatalogSheet();
   positionMealSheet();
   positionNoteModal();
+  positionListSearchSheet();
 }
 if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', onViewportChange);
@@ -2212,6 +2232,11 @@ window.setRecipeSearch = function(val) {
 };
 
 window.openFabSearch = function(e) {
+  if (currentTab === 'list') {
+    e?.preventDefault();
+    openListSearchSheet();
+    return;
+  }
   if (currentTab === 'weekmenu') {
     e?.preventDefault();
     document.getElementById('weekmenuActionSheet').classList.add('open');
@@ -2229,42 +2254,75 @@ window.openListSearch = function() {
   renderFabResults(document.getElementById('listSearchInput').value);
 };
 window.closeListSearch = function() {
-  const dd = document.getElementById('listSearchDropdown');
-  if (dd) dd.classList.remove('show');
+  document.getElementById('recentlyAdded')?.classList.remove('show');
+  document.getElementById('listSearchResults')?.classList.remove('show');
+};
+window.openListSearchSheet = function() {
+  document.getElementById('sheetOverlay').classList.add('show');
+  document.getElementById('listSearchBar').classList.add('open');
+  document.querySelector('.fab').style.display = 'none';
+  renderFabResults('');
+  positionListSearchSheet();
+  setTimeout(() => document.getElementById('listSearchInput').focus({ preventScroll: true }), 100);
+};
+window.closeListSearchSheet = function() {
+  document.getElementById('listSearchInput').blur();
+  document.getElementById('listSearchBar').classList.remove('open');
+  document.getElementById('listSearchBar').style.transform = '';
+  document.getElementById('sheetOverlay').classList.remove('show');
+  document.querySelector('.fab').style.display = '';
+  closeListSearch();
 };
 window.onListSearch = function(val) {
   renderFabResults(val);
 };
+window.clearListSearch = function() {
+  const input = document.getElementById('listSearchInput');
+  input.value = '';
+  renderFabResults('');
+  input.focus({ preventScroll: true });
+};
 
 function renderFabResults(val) {
   const q = val.trim().toLowerCase();
-  const container = document.getElementById('listSearchDropdown');
-  if (!container) return;
+  const recentContainer = document.getElementById('recentlyAdded');
+  const resultsContainer = document.getElementById('listSearchResults');
+  if (!recentContainer || !resultsContainer) return;
 
   if (!q) {
-    const recentHistory = [...loadHistory()].reverse().slice(0, 5);
+    resultsContainer.innerHTML = '';
+    resultsContainer.classList.remove('show');
+
+    const recentHistory = [...loadHistory()].reverse()
+      .filter(entry => {
+        const sep = entry.lastIndexOf('|');
+        const name = entry.slice(0, sep);
+        const catId = entry.slice(sep + 1);
+        return !Object.values(list).some(i => i.name===name && i.catId===catId && !i.checked);
+      })
+      .slice(0, 5);
     if (recentHistory.length === 0) {
-      container.innerHTML = '';
-      container.classList.remove('show');
+      recentContainer.innerHTML = '';
+      recentContainer.classList.remove('show');
     } else {
-      container.innerHTML = `<div class="fab-section-label">${t('recent')}</div>` +
+      recentContainer.innerHTML = `<div class="fab-section-label">${t('recent')}</div>` +
         recentHistory.map(entry => {
           const sep = entry.lastIndexOf('|');
           const name = entry.slice(0, sep);
           const catId = entry.slice(sep + 1);
           const displayName = localizeItemName(name, catId);
-          const cat = CATEGORIES.find(c => c.id === catId);
           const k = 'fab_recent_' + catId + '_' + name.replace(/\W/g,'_');
-          const inList = Object.values(list).find(i => i.name===name && i.catId===catId && !i.checked);
           return `<div class="search-result-item" onclick="fabAdd('${catId}','${displayName.replace(/'/g,"\\'")}','${k}')" id="${k}">
             <span class="sri-name">${displayName}</span>
-            ${inList ? `<span class="sri-added">${t('pi_inlist')}</span>` : ''}
           </div>`;
         }).join('');
-      container.classList.add('show');
+      recentContainer.classList.add('show');
     }
     return;
   }
+
+  recentContainer.innerHTML = '';
+  recentContainer.classList.remove('show');
 
   // Build set of previously used product names from persistent history + active list
   const usedKeys = loadHistory();
@@ -2307,19 +2365,16 @@ function renderFabResults(val) {
     </div>`;
   }).join('');
 
-  let hasResults = false;
   if (q && matches.length === 0) {
     const valCap = val.charAt(0).toUpperCase() + val.slice(1);
     html = `<div class="no-results">${t('search_noresults')} "<strong>${val}</strong>"</div>
       <div class="search-result-item" onclick="fabAddNew('${valCap.replace(/'/g,"\\'")}')">
         <span class="sri-name">${t('search_add_custom').replace('{q}',valCap)}</span>
       </div>`;
-  } else if (matches.length > 0) {
-    hasResults = true;
   }
 
-  container.innerHTML = html;
-  container.classList.add('show');
+  resultsContainer.innerHTML = html;
+  resultsContainer.classList.add('show');
 }
 
 window.fabAdd = function(catId, name, k) {
@@ -2366,7 +2421,7 @@ window.closeMenu = function() {
 window.closeAllSheets = function() {
   closeLocaleSheet();
   closeMenu();
-  closeListSearch();
+  closeListSearchSheet();
   closeMealSheet();
   closeCatalogSheet();
   closeGeneratorSheet();
