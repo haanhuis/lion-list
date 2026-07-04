@@ -48,6 +48,9 @@ body {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    position: fixed;
+    inset: 0;
+    width: 100%;
 }
 
 /* Sync bar */
@@ -2047,10 +2050,11 @@ main.main--recipes {
     height: 40px;
     flex: 1;
     min-width: 0;
+    border: 1.5px solid transparent;
     transition: border-color 0.15s;
 }
 .list-search-row:focus-within {
-    border-color: var(--brandColor);
+    border-color: #000;
 }
 
 .list-search-done-btn {
