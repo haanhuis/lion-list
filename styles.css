@@ -2029,8 +2029,14 @@ main.main--recipes {
     padding-left: 16px;
     padding-right: 16px;
     height: 28vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+}
+
+.list-search-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
 }
 
 .list-search-inputs {
@@ -2038,6 +2044,7 @@ main.main--recipes {
     align-items: center;
     gap: 10px;
     margin: 10px 0px;
+    flex-shrink: 0;
 }
 
 .list-search-row {
@@ -2129,6 +2136,10 @@ main.main--recipes {
     margin-top: 6px;
     padding: 0;
     box-shadow: none;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .recently-added.show,
