@@ -2028,7 +2028,7 @@ main.main--recipes {
 .list-search-sheet {
     padding-left: 16px;
     padding-right: 16px;
-    height: 280vh;
+    height: 28vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -2037,7 +2037,7 @@ main.main--recipes {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 10px 0px;    
+    margin: 10px 0px;
 }
 
 .list-search-row {
