@@ -109,12 +109,12 @@
     <div class="list-search-inputs">
       <div class="list-search-row">
         <i class="lni lni-search-1 list-search-icon"></i>
-        <input type="text" id="listSearchInput" class="list-search-input" placeholder="Voeg product toe..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){closeListSearch();},150)" onkeydown="if(event.key==='Enter')closeListSearchSheet()">
+        <input type="text" id="listSearchInput" class="list-search-input" placeholder="Voeg product toe..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){ if (document.activeElement !== document.getElementById('listSearchInput')) closeListSearch(); },150)" onkeydown="if(event.key==='Enter')closeListSearchSheet()">
         <button type="button" class="list-search-clear-btn" onclick="clearListSearch()" aria-label="Wis"><i class="lni lni-xmark"></i></button>
       </div>
       <button class="list-search-done-btn" onclick="closeListSearchSheet()" aria-label="Klaar"><i class="lni lni-check"></i></button>
     </div>
-    <div id="recentlyAdded" class="recently-added"></div>
+    <div id="frequentlyAdded" class="frequently-added"></div>
     <div id="listSearchResults" class="list-search-results"></div>
   </div>
 </div>
@@ -737,7 +737,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v107';
+const APP_VERSION = 'v108';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -1876,6 +1876,30 @@ function recordUsed(name, catId) {
   saveHistory(h);
 }
 
+// ── Add frequency (independent of the "used" history above) ───────────
+const FREQ_KEY = 'dlz_product_freq';
+function loadFreq() {
+  try { return new Map(Object.entries(JSON.parse(localStorage.getItem(FREQ_KEY) || '{}'))); } catch { return new Map(); }
+}
+function saveFreq(freqMap) {
+  try { localStorage.setItem(FREQ_KEY, JSON.stringify(Object.fromEntries(freqMap))); } catch {}
+}
+function recordFreq(name, catId) {
+  const f = loadFreq();
+  const key = name + '|' + catId;
+  f.set(key, (f.get(key) || 0) + 1);
+  saveFreq(f);
+}
+// Fallback products shown in "frequently added" until real usage data accumulates.
+const FREQUENT_SEED = [
+  { name: 'Appels',      catId: 'frt' },
+  { name: 'Aardappelen', catId: 'grn' },
+  { name: 'Druiven',     catId: 'frt' },
+  { name: 'Melk',        catId: 'dai' },
+  { name: 'Yoghurt',     catId: 'dai' },
+  { name: 'Kaas',        catId: 'dai' },
+];
+
 window.removeItem = function(id) {
   const item = list[id];
   if (item) recordUsed(item.name, item.catId);
@@ -1885,6 +1909,7 @@ window.removeItem = function(id) {
 
 function addProduct(name, catId) {
   recordUsed(name, catId);
+  recordFreq(name, catId);
   const existing = Object.entries(list).find(([,i]) => i.name===name && i.catId===catId && !i.checked);
   setSyncBar('syncing');
   if (existing) {
@@ -2254,7 +2279,7 @@ window.openListSearch = function() {
   renderFabResults(document.getElementById('listSearchInput').value);
 };
 window.closeListSearch = function() {
-  document.getElementById('recentlyAdded')?.classList.remove('show');
+  document.getElementById('frequentlyAdded')?.classList.remove('show');
   document.getElementById('listSearchResults')?.classList.remove('show');
 };
 window.openListSearchSheet = function() {
@@ -2290,44 +2315,53 @@ window.clearListSearch = function() {
 
 function renderFabResults(val) {
   const q = val.trim().toLowerCase();
-  const recentContainer = document.getElementById('recentlyAdded');
+  const frequentContainer = document.getElementById('frequentlyAdded');
   const resultsContainer = document.getElementById('listSearchResults');
-  if (!recentContainer || !resultsContainer) return;
+  if (!frequentContainer || !resultsContainer) return;
+
+  const isUnchecked = (name, catId) => Object.values(list).some(i => i.name===name && i.catId===catId && !i.checked);
 
   if (!q) {
     resultsContainer.innerHTML = '';
     resultsContainer.classList.remove('show');
 
-    const recentHistory = [...loadHistory()].reverse()
-      .filter(entry => {
-        const sep = entry.lastIndexOf('|');
-        const name = entry.slice(0, sep);
-        const catId = entry.slice(sep + 1);
-        return !Object.values(list).some(i => i.name===name && i.catId===catId && !i.checked);
+    const selected = [...loadFreq().entries()]
+      .map(([key, count]) => {
+        const sep = key.lastIndexOf('|');
+        return { name: key.slice(0, sep), catId: key.slice(sep + 1), count };
       })
+      .filter(p => !isUnchecked(p.name, p.catId))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'nl'))
       .slice(0, 5);
-    if (recentHistory.length === 0) {
-      recentContainer.innerHTML = '';
-      recentContainer.classList.remove('show');
+
+    if (selected.length < 5) {
+      for (const seed of FREQUENT_SEED) {
+        if (selected.length >= 5) break;
+        if (selected.some(p => p.name === seed.name && p.catId === seed.catId)) continue;
+        if (isUnchecked(seed.name, seed.catId)) continue;
+        selected.push(seed);
+      }
+    }
+
+    if (selected.length === 0) {
+      frequentContainer.innerHTML = '';
+      frequentContainer.classList.remove('show');
     } else {
-      recentContainer.innerHTML = `<div class="fab-section-label">${t('recent')}</div>` +
-        recentHistory.map(entry => {
-          const sep = entry.lastIndexOf('|');
-          const name = entry.slice(0, sep);
-          const catId = entry.slice(sep + 1);
+      frequentContainer.innerHTML = `<div class="fab-section-label">${t('frequent')}</div>` +
+        selected.map(({name, catId}) => {
           const displayName = localizeItemName(name, catId);
-          const k = 'fab_recent_' + catId + '_' + name.replace(/\W/g,'_');
+          const k = 'fab_freq_' + catId + '_' + name.replace(/\W/g,'_');
           return `<div class="search-result-item" onclick="fabAdd('${catId}','${displayName.replace(/'/g,"\\'")}','${k}')" id="${k}">
             <span class="sri-name">${displayName}</span>
           </div>`;
         }).join('');
-      recentContainer.classList.add('show');
+      frequentContainer.classList.add('show');
     }
     return;
   }
 
-  recentContainer.innerHTML = '';
-  recentContainer.classList.remove('show');
+  frequentContainer.innerHTML = '';
+  frequentContainer.classList.remove('show');
 
   // Build set of previously used product names from persistent history + active list
   const usedKeys = loadHistory();

@@ -2130,7 +2130,7 @@ main.main--recipes {
     display: flex;
 }
 
-.recently-added,
+.frequently-added,
 .list-search-results {
     display: none;
     margin-top: 6px;
@@ -2142,7 +2142,7 @@ main.main--recipes {
     -webkit-overflow-scrolling: touch;
 }
 
-.recently-added.show,
+.frequently-added.show,
 .list-search-results.show {
     display: block;
 }
