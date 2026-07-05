@@ -104,14 +104,13 @@
 <span id="listIdLabel" style="display:none"></span>
 
 <div id="listSearchBar" class="bottom-sheet list-search-sheet">
-  <div class="sheet-handle"></div>
   <div class="list-search-wrap">
     <div class="list-search-inputs">
-      <div class="list-search-row">
+      <form class="list-search-row" onsubmit="event.preventDefault(); closeListSearchSheet();">
         <i class="lni lni-search-1 list-search-icon"></i>
-        <input type="text" id="listSearchInput" class="list-search-input" placeholder="Voeg product toe..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){ if (document.activeElement !== document.getElementById('listSearchInput')) closeListSearch(); },150)" onkeydown="if(event.key==='Enter')closeListSearchSheet()">
+        <input type="text" id="listSearchInput" class="list-search-input" placeholder="Voeg product toe..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" inputmode="search" onfocus="openListSearch()" oninput="onListSearch(this.value)" onblur="setTimeout(function(){ if (document.activeElement !== document.getElementById('listSearchInput')) closeListSearch(); },150)">
         <button type="button" class="list-search-clear-btn" onclick="clearListSearch()" aria-label="Wis"><i class="lni lni-xmark"></i></button>
-      </div>
+      </form>
       <button class="list-search-done-btn" onclick="closeListSearchSheet()" aria-label="Klaar"><i class="lni lni-check"></i></button>
     </div>
     <div id="frequentlyAdded" class="frequently-added"></div>
@@ -457,7 +456,6 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
       </button>
     </div>
-    <button class="share-connect-btn" id="shareConnectBtn" onclick="closeShare(); menuConnectList();" data-i18n="menu_connect">Verbinden met andere lijst</button>
   </div>
 </div>
 
@@ -598,7 +596,6 @@ function applyLocaleToDOM() {
   // Share modal
   const st = document.getElementById('shareTitle'); if (st) st.textContent = t('share_title');
   const ss = document.getElementById('shareSubText'); if (ss) ss.textContent = t('share_sub');
-  const scn = document.getElementById('shareConnectBtn'); if (scn) scn.textContent = t('menu_connect');
   const scl = document.getElementById('shareCopyLabel'); if (scl) scl.textContent = t('share_copy');
   const scd = document.getElementById('shareCopyDesc'); if (scd) scd.textContent = t('share_copy_desc');
   const svl = document.getElementById('shareViaLabel'); if (svl) svl.textContent = t('share_via');
@@ -737,7 +734,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v108';
+const APP_VERSION = 'v109';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -2406,8 +2403,7 @@ function renderFabResults(val) {
 
   if (q && matches.length === 0) {
     const valCap = val.charAt(0).toUpperCase() + val.slice(1);
-    html = `<div class="no-results">${t('search_noresults')} "<strong>${val}</strong>"</div>
-      <div class="search-result-item" onclick="fabAddNew('${valCap.replace(/'/g,"\\'")}')">
+    html = `<div class="search-result-item" onclick="fabAddNew('${valCap.replace(/'/g,"\\'")}')">
         <span class="sri-name">${t('search_add_custom').replace('{q}',valCap)}</span>
       </div>`;
   }
