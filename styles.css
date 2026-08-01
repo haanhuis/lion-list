@@ -138,6 +138,7 @@ body {
     height: 36px;
     flex-shrink: 0;
 }
+.header-logo-dark { display: none; }
 
 .header-list-name {
     font-size: 15px;
@@ -3342,6 +3343,10 @@ main.main--recipes {
 
     /* Category header */
     .category-header { background: var(--grey); }
+
+    /* Logo swap */
+    .header-logo-light { display: none; }
+    .header-logo-dark  { display: block; }
 
     /* Header + list search bar: dark bg in dark mode */
     .header { background: var(--bg-card); }

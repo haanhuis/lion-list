@@ -92,7 +92,8 @@
       </svg>
     </button>
     <div class="header-center" onclick="document.getElementById('connectModal').classList.contains('show')?closeConnectModal():menuConnectList()" style="cursor:pointer;">
-      <img src="komisses-app-logo.svg" class="header-logo-img" alt="">
+      <img src="komisses-app-logo.svg" class="header-logo-img header-logo-light" alt="">
+      <img src="komisses-app-logo-white.svg" class="header-logo-img header-logo-dark" alt="">
       <span class="header-list-name" id="headerListName"></span>
       <img src="double-arrows.svg" class="header-arrows-img" alt="">
     </div>
@@ -734,7 +735,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v111';
+const APP_VERSION = 'v112';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
