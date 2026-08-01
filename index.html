@@ -734,7 +734,7 @@ async function loadCatalog() {
   catalogLoaded = true;
 }
 
-const APP_VERSION = 'v110';
+const APP_VERSION = 'v111';
 
 // Platform detection — Android gets Material Design 3 nav bar, everything else gets iOS/HIG style
 const platformOverride = new URLSearchParams(window.location.search).get('platform');
@@ -1046,8 +1046,15 @@ function renderRecipeCatalog() {
     recipes = recipes.filter(r => (r.title||r.label||'').toLowerCase().includes(q));
   }
   if (rcFilterRegion) recipes = recipes.filter(r => r.region === rcFilterRegion);
-  if (rcFilterTraits.length) recipes = recipes.filter(r => rcFilterTraits.includes(r.trait));
-  if (rcFilterVeg) recipes = recipes.filter(r => r.diet === 'vegetarian');
+  if (rcFilterTraits.length) recipes = recipes.filter(r => {
+    const rTraits = (r.trait || '').split(',').map(t => t.trim());
+    return rcFilterTraits.every(ft =>
+      ft === 'salade'
+        ? rTraits.includes('salade') || (r.title || '').toLowerCase().includes('salade')
+        : rTraits.includes(ft)
+    );
+  });
+  if (rcFilterVeg) recipes = recipes.filter(r => r.diet === 'vegetarian' || r.diet === 'vegan' || r.diet === 'Vegan');
   if (rcFilterSource) recipes = recipes.filter(r => rcGetSource(r) === rcFilterSource);
 
   const regions = ['Belgisch','Italiaans','Mediterraans','Aziatisch'];

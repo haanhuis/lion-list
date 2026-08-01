@@ -622,7 +622,7 @@ main.main--recipes {
 
 .rc-header {
     flex-shrink: 0;
-    background: white;
+    background: transparent;
     border-bottom: 1px solid rgba(0,0,0,0.07);
 }
 
@@ -2155,7 +2155,7 @@ main.main--recipes {
 }
 .weekmenu-filter-bar:not(.rc-filter-bar) {
     padding: 10px 14px;
-    background: white;
+    background: transparent;
     border-bottom: 1px solid rgba(0,0,0,0.07);
 }
 .weekmenu-filter-btn {
@@ -3296,8 +3296,18 @@ main.main--recipes {
     .bottom-tab {
         color: var(--text-muted);
     }
+    .bottom-tab.active {
+        color: #fff;
+        background-color: rgba(255,255,255,0.08);
+    }
     .platform-android .bottom-tab {
         color: var(--text-muted);
+    }
+    .platform-android .bottom-tab.active {
+        color: #fff;
+    }
+    .platform-android .bottom-tab.active .tab-icon {
+        background: rgba(255,255,255,0.12);
     }
 
     /* Inputs */
@@ -3372,8 +3382,16 @@ main.main--recipes {
         color: var(--text-muted);
     }
     .weekmenu-filter-btn.active {
-        background: var(--brandColor);
+        background: #fff;
         border-color: transparent;
         color: #000;
+    }
+    .rc-region-option.selected {
+        background: #fff;
+        color: #000;
+    }
+    .weekmenu-action-icon {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
     }
 }
